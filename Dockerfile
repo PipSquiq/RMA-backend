@@ -1,13 +1,15 @@
 # 1. Gunakan base image resmi Python versi 3.10 slim agar ukuran container ringan
 FROM python:3.10-slim
 
-# 2. Install dependensi OS yang dibutuhkan oleh Prisma Engine dan PostgreSQL (OpenSSL)
+# 2. Install dependensi OS yang dibutuhkan oleh Node.js, Prisma Engine, dan PostgreSQL
+# 💡 BARU: Tambahkan libatomic1 ke daftar instalasi
 RUN apt-get update && apt-get install -y \
     openssl \
     ca-certificates \
+    libatomic1 \
     && rm -rf /var/lib/apt/lists/*
 
-# 3. Buat user khusus non-root bernama "user" (Wajib mematuhi regulasi keamanan Hugging Face)
+# 3. Buat user khusus non-root bernama "user" (Wajib di Hugging Face Spaces)
 RUN useradd -m -u 1000 user
 USER user
 ENV HOME=/home/user \
