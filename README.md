@@ -1,5 +1,3 @@
-# Untuk pengguna Windows PowerShell (salin dan jalankan semua):
-@"
 ---
 title: RMA Backend
 emoji: 🚀
@@ -12,5 +10,4 @@ pinned: false
 
 # RMA Backend API
 
-Digital platform backend system for RMA (Return Merchandise Authorization) tracking and management system.
-"@ | Out-File -Encoding utf8 README.md
+Digital platform backend system for RMA tracking and management system.
