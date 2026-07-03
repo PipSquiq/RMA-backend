@@ -1,0 +1,31 @@
+# Dependency directories
+node_modules/
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+
+# Prisma generated clients and schema caches
+.prisma/
+generated/
+
+# Environment variables (CRITICAL: Never push this to GitHub)
+.env
+.env.local
+
+# IDE and OS specific files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Database seed files (diabaikan dari pelacakan git agar aman)
+seed.py
