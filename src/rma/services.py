@@ -273,3 +273,26 @@ async def get_sla_analytics_dashboard():
         "overall_breach_rate_percentage": round(overall_breach_rate, 2),
         "monthly_trends": monthly_trends
     }
+
+async def fetch_all_rmas():
+    """
+    Mengambil semua data pengajuan RMA dari database Neon.
+    Diurutkan berdasarkan waktu pembuatan terbaru untuk kebutuhan table feed di Frontend.
+    """
+    return await db.rma_request.find_many(
+        order={
+            "created_at": "desc"
+        }
+    )
+
+
+async def fetch_rma_by_id(rma_id: str):
+    """
+    Mencari satu record detail data RMA berdasarkan Primary Key (ID).
+    Digunakan saat Frontend mengklik salah satu baris baris tabel untuk melihat detail status.
+    """
+    return await db.rma_request.find_unique(
+        where={
+            "id": rma_id
+        }
+    )

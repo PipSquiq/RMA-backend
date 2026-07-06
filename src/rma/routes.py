@@ -7,7 +7,8 @@ from src.rma.schemas import (
     RmaApprovalRequest,
     RmaFeedbackSubmitRequest,
     HeatmapPoint, 
-    SlaDashboardResponse
+    SlaDashboardResponse,
+    RmaResponseData
 )
 from src.rma import services as rma_services
 from src.rma.integration import trigger_external_customer_ticket
@@ -149,3 +150,21 @@ async def get_sla_dashboard_metrics(current_user=Depends(RoleChecker(["ENGINEER"
         return data
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Gagal memuat metrik dashboard: {str(e)}")
+
+@router.get("", response_model=List[RmaResponseData])
+async def get_all_rma_list(current_user=Depends(RoleChecker(["FIELD_TECH", "ENGINEER", "LOGISTIC_PARTNER", "DOP_STAFF", "CUST_ADMIN"]))):
+    """Endpoint: Mengambil semua daftar data RMA (Urut dari yang terbaru)"""
+    try:
+        data = await rma_services.fetch_all_rmas()
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Gagal mengambil daftar RMA: {str(e)}")
+
+
+@router.get("/{rma_id}", response_model=RmaResponseData)
+async def get_rma_detail_by_id(rma_id: str, current_user=Depends(RoleChecker(["FIELD_TECH", "ENGINEER", "LOGISTIC_PARTNER", "DOP_STAFF", "CUST_ADMIN"]))):
+    """Endpoint: Mengambil detail data RMA spesifik berdasarkan ID"""
+    data = await rma_services.fetch_rma_by_id(rma_id)
+    if not data:
+        raise HTTPException(status_code=404, detail="Data RMA tidak ditemukan.")
+    return data
